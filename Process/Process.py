@@ -13,20 +13,14 @@ class Process(object):
     def addLayer(self, tipo, parametros):
         if(tipo == 'Embedding'):
             """ La entrada input_dim debe ser seteada con la longitud del vocabulario + 1"""
-            #self.modelo.add(Embedding(input_dim = parametros['input_dim'], output_dim= parametros['output'], input_length= parametros['input_length']))
-            self.modelo.add(Embedding(parametros['input_dim'], output_dim= parametros['output']))
+            self.modelo.add(Embedding(input_dim = parametros['input_dim'], output_dim= parametros['output'], input_length= parametros['input_length']))
             self.contador = self.contador + 1
         elif(tipo == 'Dense'): 
             if(self.contador == 0):
-                """
-                    input_dim = dimension de la entrada
-                    activation = nombre de la funcion de activacion
-                    init = nombre de la funcion de inicializacion de los pesos de la capa
-                """
                 self.modelo.add(Dense(parametros['output'], input_dim = parametros['input_dim'], activation=parametros['activation'])) 
             else:
                 self.modelo.add(Dense(parametros['output'], activation = parametros['activation']))
-               
+                #self.modelo.add(TimeDistributedDense(parametros['output']))
             self.contador = self.contador + 1
         elif(tipo == 'Dropout'):
             """ Debe existir una capa anterior a la capa de Dropout a agregar"""
@@ -35,10 +29,13 @@ class Process(object):
                 self.modelo.add(Dropout(parametros['rate']))
                 """ Dropout: flotante entre 0 y 1, fracciones de las unidades de entrada a "apagar" """
         elif(tipo == 'LSTM'):
-            if(self.contador == 0):
-                self.modelo.add(LSTM(parametros['output'], input_dim = parametros['input_dim']))
-            else:
-                self.modelo.add(LSTM(parametros['output']))
+            #if(self.contador == 0):
+                #self.modelo.add(LSTM(parametros['output'], input_dim = parametros['input_dim'], return_sequences = parametros['return_sequences']))
+            #else:
+                if (parametros['return_sequences'] == 'False'):
+                    self.modelo.add(LSTM(parametros['output'], return_sequences = False))
+                else:
+                    self.modelo.add(LSTM(parametros['output'], return_sequences = True))         
         print self.modelo.get_config()        
         
     """ ETAPA DE COMPILAR EL MODELO """
