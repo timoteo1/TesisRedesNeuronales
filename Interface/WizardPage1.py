@@ -1,0 +1,145 @@
+# -*- coding: utf-8 -*-
+
+# Form implementation generated from reading ui file 'WPruebaUser1.ui'
+#
+# Created by: PyQt4 UI code generator 4.11.4
+#
+# WARNING! All changes made in this file will be lost!
+
+from PyQt4 import QtCore, QtGui
+
+try:
+    _fromUtf8 = QtCore.QString.fromUtf8
+except AttributeError:
+    def _fromUtf8(s):
+        return s
+
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
+
+class Ui_WizardPage(object):
+    def setupUi(self, WizardPage):
+        WizardPage.setObjectName(_fromUtf8("WizardPage"))
+        WizardPage.resize(484, 325)
+        self.labelTipoSplit = QtGui.QLabel(WizardPage)
+        self.labelTipoSplit.setGeometry(QtCore.QRect(30, 230, 91, 41))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.labelTipoSplit.setFont(font)
+        self.labelTipoSplit.setObjectName(_fromUtf8("labelTipoSplit"))
+        self.labelTTValor = QtGui.QLabel(WizardPage)
+        self.labelTTValor.setGeometry(QtCore.QRect(340, 230, 91, 41))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.labelTTValor.setFont(font)
+        self.labelTTValor.setObjectName(_fromUtf8("labelTTValor"))
+        self.labelMaxLongitud = QtGui.QLabel(WizardPage)
+        self.labelMaxLongitud.setGeometry(QtCore.QRect(230, 130, 201, 41))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.labelMaxLongitud.setFont(font)
+        self.labelMaxLongitud.setObjectName(_fromUtf8("labelMaxLongitud"))
+        self.label = QtGui.QLabel(WizardPage)
+        self.label.setGeometry(QtCore.QRect(10, 10, 101, 31))
+        font = QtGui.QFont()
+        font.setFamily(_fromUtf8("Verdana"))
+        font.setPointSize(12)
+        self.label.setFont(font)
+        self.label.setObjectName(_fromUtf8("label"))
+        self.pushButtonViewBalance = QtGui.QPushButton(WizardPage)
+        self.pushButtonViewBalance.setGeometry(QtCore.QRect(30, 90, 131, 23))
+        self.pushButtonViewBalance.setObjectName(_fromUtf8("pushButtonViewBalance"))
+        self.comboBoxTipoSplit = QtGui.QComboBox(WizardPage)
+        self.comboBoxTipoSplit.setGeometry(QtCore.QRect(150, 240, 151, 22))
+        self.comboBoxTipoSplit.setObjectName(_fromUtf8("comboBoxTipoSplit"))
+        self.comboBoxTipoSplit.addItem(_fromUtf8(""))
+        self.comboBoxTipoSplit.addItem(_fromUtf8(""))
+        self.labelTipoSampling = QtGui.QLabel(WizardPage)
+        self.labelTipoSampling.setGeometry(QtCore.QRect(30, 180, 91, 41))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.labelTipoSampling.setFont(font)
+        self.labelTipoSampling.setObjectName(_fromUtf8("labelTipoSampling"))
+        self.pushButtonConfirmarFormato = QtGui.QPushButton(WizardPage)
+        self.pushButtonConfirmarFormato.setGeometry(QtCore.QRect(340, 50, 131, 23))
+        self.pushButtonConfirmarFormato.setObjectName(_fromUtf8("pushButtonConfirmarFormato"))
+        self.lineEditPadSequence = QtGui.QLineEdit(WizardPage)
+        self.lineEditPadSequence.setGeometry(QtCore.QRect(150, 140, 61, 21))
+        self.lineEditPadSequence.setObjectName(_fromUtf8("lineEditPadSequence"))
+        self.labelPadSequence = QtGui.QLabel(WizardPage)
+        self.labelPadSequence.setGeometry(QtCore.QRect(30, 130, 121, 41))
+        font = QtGui.QFont()
+        font.setFamily(_fromUtf8("Verdana"))
+        font.setPointSize(9)
+        self.labelPadSequence.setFont(font)
+        self.labelPadSequence.setObjectName(_fromUtf8("labelPadSequence"))
+        self.labelFormatoDataSet = QtGui.QLabel(WizardPage)
+        self.labelFormatoDataSet.setGeometry(QtCore.QRect(30, 50, 121, 21))
+        font = QtGui.QFont()
+        font.setFamily(_fromUtf8("Verdana"))
+        font.setPointSize(9)
+        self.labelFormatoDataSet.setFont(font)
+        self.labelFormatoDataSet.setObjectName(_fromUtf8("labelFormatoDataSet"))
+        self.comboBoxTipoSampling = QtGui.QComboBox(WizardPage)
+        self.comboBoxTipoSampling.setGeometry(QtCore.QRect(150, 190, 151, 22))
+        self.comboBoxTipoSampling.setObjectName(_fromUtf8("comboBoxTipoSampling"))
+        self.comboBoxTipoSampling.addItem(_fromUtf8(""))
+        self.comboBoxTipoSampling.addItem(_fromUtf8(""))
+        self.pushButtonPreproceso = QtGui.QPushButton(WizardPage)
+        self.pushButtonPreproceso.setGeometry(QtCore.QRect(340, 290, 131, 23))
+        self.pushButtonPreproceso.setObjectName(_fromUtf8("pushButtonPreproceso"))
+        self.comboBoxFormatoDataSet = QtGui.QComboBox(WizardPage)
+        self.comboBoxFormatoDataSet.setGeometry(QtCore.QRect(150, 50, 121, 22))
+        self.comboBoxFormatoDataSet.setObjectName(_fromUtf8("comboBoxFormatoDataSet"))
+        self.comboBoxFormatoDataSet.addItem(_fromUtf8(""))
+        self.comboBoxFormatoDataSet.addItem(_fromUtf8(""))
+        self.comboBoxTest = QtGui.QComboBox(WizardPage)
+        self.comboBoxTest.setGeometry(QtCore.QRect(400, 240, 71, 22))
+        self.comboBoxTest.setObjectName(_fromUtf8("comboBoxTest"))
+        self.comboBoxTest.addItem(_fromUtf8(""))
+        self.comboBoxTest.addItem(_fromUtf8(""))
+        self.comboBoxTest.addItem(_fromUtf8(""))
+        self.comboBoxTest.addItem(_fromUtf8(""))
+        self.comboBoxTest.addItem(_fromUtf8(""))
+        self.comboBoxTest.addItem(_fromUtf8(""))
+        self.comboBoxTest.addItem(_fromUtf8(""))
+        self.comboBoxTest.addItem(_fromUtf8(""))
+        self.comboBoxTest.addItem(_fromUtf8(""))
+
+        self.retranslateUi(WizardPage)
+        QtCore.QMetaObject.connectSlotsByName(WizardPage)
+
+    def retranslateUi(self, WizardPage):
+        WizardPage.setWindowTitle(_translate("WizardPage", "WizardPage", None))
+        self.labelTipoSplit.setText(_translate("WizardPage", "Tipo Split", None))
+        self.labelTTValor.setText(_translate("WizardPage", "Test", None))
+        self.labelMaxLongitud.setText(_translate("WizardPage", "Longitud", None))
+        self.label.setText(_translate("WizardPage", "PreProceso", None))
+        self.pushButtonViewBalance.setText(_translate("WizardPage", "Mostrar Balanceo", None))
+        self.comboBoxTipoSplit.setItemText(0, _translate("WizardPage", "TrainTest", None))
+        self.comboBoxTipoSplit.setItemText(1, _translate("WizardPage", "K-Fold", None))
+        self.labelTipoSampling.setText(_translate("WizardPage", "Tipo Sampling", None))
+        self.pushButtonConfirmarFormato.setText(_translate("WizardPage", "Confrimar Formato", None))
+        self.lineEditPadSequence.setText(_translate("WizardPage", "10", None))
+        self.labelPadSequence.setText(_translate("WizardPage", "Longitud instancia", None))
+        self.labelFormatoDataSet.setText(_translate("WizardPage", "Formato DataSet", None))
+        self.comboBoxTipoSampling.setItemText(0, _translate("WizardPage", "OverSampling", None))
+        self.comboBoxTipoSampling.setItemText(1, _translate("WizardPage", "UnderSampling", None))
+        self.pushButtonPreproceso.setText(_translate("WizardPage", "Pre-procesar", None))
+        self.comboBoxFormatoDataSet.setItemText(0, _translate("WizardPage", "Formato 1", None))
+        self.comboBoxFormatoDataSet.setItemText(1, _translate("WizardPage", "Formato 2", None))
+        self.comboBoxTest.setItemText(0, _translate("WizardPage", "0.1", None))
+        self.comboBoxTest.setItemText(1, _translate("WizardPage", "0.2", None))
+        self.comboBoxTest.setItemText(2, _translate("WizardPage", "0.3", None))
+        self.comboBoxTest.setItemText(3, _translate("WizardPage", "0.4", None))
+        self.comboBoxTest.setItemText(4, _translate("WizardPage", "0.5", None))
+        self.comboBoxTest.setItemText(5, _translate("WizardPage", "0.6", None))
+        self.comboBoxTest.setItemText(6, _translate("WizardPage", "0.7", None))
+        self.comboBoxTest.setItemText(7, _translate("WizardPage", "0.8", None))
+        self.comboBoxTest.setItemText(8, _translate("WizardPage", "0.9", None))
+

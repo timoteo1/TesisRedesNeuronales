@@ -39,8 +39,9 @@ class Process(object):
         print self.modelo.get_config()        
         
     """ ETAPA DE COMPILAR EL MODELO """
-    def compilerModel(self):
-        self.modelo.compile(optimizer = 'rmsprop', loss = 'categorical_crossentropy', metrics = ['categorical_accuracy'])
+    def compilerModel(self, opt, los, met):
+        #self.modelo.compile(optimizer = 'rmsprop', loss = 'categorical_crossentropy', metrics = ['categorical_accuracy'])
+        self.modelo.compile(optimizer = opt, loss = los, metrics = [met])
         
     """ ETAPA DE ENTRENAR EL MODELO """
     
@@ -103,7 +104,7 @@ class Process(object):
             for i in xrange(0, len(lista[0])):
                 listUnique = list()
                 for aux in lista:
-                    print 'longitud  ' + str(len(aux)) + ' posicion ' + str(i)
+                    #print 'longitud  ' + str(len(aux)) + ' posicion ' + str(i)
                     if len(aux) > i:
                         if not listUnique.__contains__(aux[i]):
                             listUnique.append(aux[i])

@@ -4,18 +4,37 @@ from PREprocess.RandomUS import RandomUS
 from PREprocess.RandomOS import RandomOS
 from sklearn import preprocessing
 from PREprocess.DataSet1 import DataSet1
+from PREprocess.DataSet2 import DataSet2
 from keras.utils.np_utils import to_categorical
 from PyQt4.Qt import QStringList
 
 class PreProcess(object):
     
     def __init__(self):
+        pass
+
+    def Constructor(self, tipoDataSet):
         #self.dataSet = self.readFile()    
         #self.dataSet = (['a', 'b', 'd', 'bueno'],['m','n', 'y', 'v', 'o', 'j', 'bueno'],['g','g','h','y','l','malo'],['u','r','y','j','k','regular'],['d','a','s','b','h','bueno'],['g','f','x','j','t','o','p','bueno'],['t','i','m','o','t','e','regular'],['g','o','n','z','a','malo'],['l','e','z','h','o','l','bueno'], ['l','a','l','a','l','regular'],['p','e','p','a','bueno'],['p','i','g','g','regular'],['h','o','l','a','q','u','e','t','bueno'],['a','l','malo'],['s','s','s','bueno'] )
-        self.X, self.Y = self.openDataSet()
+        self.X, self.Y, self.clases, self.lenMin, self.cant_clases = self.openDataSet(tipoDataSet)
         self.vocabulary = self.Getvocabulary()
         self.dataSetInt = self.convertInt()
-        #self.ViewBalance()
+        #self.ViewBalance()    
+    
+    def getCant_clases(self):
+        return self.cant_clases
+    
+    def verPruebaBorrarDespues(self):
+        #print self.pad_sequences(10)
+        print 'clases'
+        print self.clases
+        print 'lista de clases normalizadas'
+        print self.Y
+        
+        
+        
+    def lenMinSequence(self):
+        return self.lenMin
          
         
     def lenVocabulary(self):
@@ -45,11 +64,15 @@ class PreProcess(object):
     
     
     def pad_sequences(self, leng):
-        """ Secuencias de longitud leng """
+        """ Garantizo que el valor seteado por el usuario sea valido """
+        if leng <= 0 or self.lenMin < leng:
+            longitud = self.lenMin
+        else:
+            longitud = leng
         x = list()
         for i in self.dataSetInt:
             m = list()
-            m.append(i[:leng])
+            m.append(i[:longitud])
             x = x + m
         return x
     
@@ -75,7 +98,8 @@ class PreProcess(object):
         for i in self.Y:
             if not labelUnique.__contains__(i):
                 labelUnique.append(i)
-                x.append('clase ' + i + ' instancias '+ str(self.Y.count(i)))
+                #x.append('clase ' + i + ' instancias '+ str(self.Y.count(i)))
+                x.append('clase ' + str(i) + ' instancias '+ str(self.Y.count(i)))
         return x
     
     
@@ -92,35 +116,40 @@ class PreProcess(object):
             ros = RandomOS()
             x_resampled, y_resampled = ros.doSampling(dataSetPS, self.Y)
         return x_resampled, y_resampled
-        
+         
     
-    
-    def normalize(self, X_train, Y_train, X_test, Y_test):
+    def normalize(self, X_train):
+    #def normalize(self, X_train, Y_train, X_test, Y_test):
               
         X_train = preprocessing.normalize(X_train)
-        Y_train = preprocessing.normalize(Y_train)
+        #Y_train = preprocessing.normalize(Y_train)
         
-        X_test = preprocessing.normalize(X_test)
-        Y_test = preprocessing.normalize(Y_test)
+        #X_test = preprocessing.normalize(X_test)
+        #Y_test = preprocessing.normalize(Y_test)
                 
-        return X_train, Y_train, X_test, Y_test
+        #return X_train, Y_train, X_test, Y_test
+        return X_train
     
     
+    def openDataSet(self, tipoDataSet):
+        if tipoDataSet == 'Formato 1':
+            dataSet1 =DataSet1()
+            X, Y, clases, lenMin, cant_clases = dataSet1.readDataSet()
+        elif tipoDataSet == 'Formato 2':
+            dataSet2 = DataSet2()
+            X, Y, clases, lenMin, cant_clases = dataSet2.readDataSet()
+        
+        return X, Y, clases, lenMin, cant_clases
     
-    def openDataSet(self):
-        dataSet1 =DataSet1()
-        X, Y = dataSet1.readDataSet()
-        return X, Y
     
-    
+    #def toCategorical(self, y_train, y_test, clases):
     def toCategorical(self, y_train, y_test, clases):
-    #def toCategorical(self, y_train, y_test):
         """ Convierte los vectores a una matriz binaria, donde recibe como parametro el numero de clases."""    
         
         y_train = to_categorical(y_train, nb_classes= clases)
-        
+        #y_train = to_categorical(y_train)
         y_test = to_categorical(y_test, nb_classes= clases)
-        
+        #y_test = to_categorical(y_test)
         
         return y_train, y_test
     

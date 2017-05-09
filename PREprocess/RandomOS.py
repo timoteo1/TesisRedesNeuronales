@@ -7,7 +7,7 @@ class RandomOS(Sampling):
         self.ros = RandomOverSampler() 
     
     def doSampling(self, X, Y):
-      
+        
         x_res, y_res = self.ros.fit_sample(X, Y)
         
         return x_res, y_res
