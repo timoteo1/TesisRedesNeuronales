@@ -25,9 +25,14 @@ except AttributeError:
 class Ui_DialogResultados(object):
     def setupUi(self, DialogResultados):
         DialogResultados.setObjectName(_fromUtf8("DialogResultados"))
-        DialogResultados.resize(391, 261)
+        DialogResultados.resize(402, 211)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(DialogResultados.sizePolicy().hasHeightForWidth())
+        DialogResultados.setSizePolicy(sizePolicy)
         self.listViewResultados = QtGui.QListView(DialogResultados)
-        self.listViewResultados.setGeometry(QtCore.QRect(10, 10, 371, 241))
+        self.listViewResultados.setGeometry(QtCore.QRect(10, 10, 381, 192))
         self.listViewResultados.setObjectName(_fromUtf8("listViewResultados"))
 
         self.retranslateUi(DialogResultados)

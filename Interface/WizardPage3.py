@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'WPruebaUser3.ui'
+# Form implementation generated from reading ui file 'WPruebaUser3_next.ui'
 #
 # Created by: PyQt4 UI code generator 4.11.4
 #
@@ -25,7 +25,7 @@ except AttributeError:
 class Ui_WizardPage3(object):
     def setupUi(self, WizardPage3):
         WizardPage3.setObjectName(_fromUtf8("WizardPage3"))
-        WizardPage3.resize(478, 323)
+        WizardPage3.resize(478, 369)
         self.label_4 = QtGui.QLabel(WizardPage3)
         self.label_4.setGeometry(QtCore.QRect(10, 200, 151, 16))
         font = QtGui.QFont()
@@ -93,7 +93,7 @@ class Ui_WizardPage3(object):
         self.labelnNB_epoch.setFont(font)
         self.labelnNB_epoch.setObjectName(_fromUtf8("labelnNB_epoch"))
         self.pushButtonProceso = QtGui.QPushButton(WizardPage3)
-        self.pushButtonProceso.setGeometry(QtCore.QRect(330, 270, 131, 23))
+        self.pushButtonProceso.setGeometry(QtCore.QRect(320, 290, 131, 23))
         self.pushButtonProceso.setObjectName(_fromUtf8("pushButtonProceso"))
         self.labelCompilerLoss_2 = QtGui.QLabel(WizardPage3)
         self.labelCompilerLoss_2.setGeometry(QtCore.QRect(20, 150, 91, 41))
@@ -116,6 +116,17 @@ class Ui_WizardPage3(object):
         self.comboBoxCompilerMetrics.addItem(_fromUtf8(""))
         self.comboBoxCompilerMetrics.addItem(_fromUtf8(""))
         self.comboBoxCompilerMetrics.addItem(_fromUtf8(""))
+        self.pushButtonNext = QtGui.QPushButton(WizardPage3)
+        self.pushButtonNext.setGeometry(QtCore.QRect(320, 330, 131, 23))
+        self.pushButtonNext.setObjectName(_fromUtf8("pushButtonNext"))
+        self.labelMensaje = QtGui.QLabel(WizardPage3)
+        self.labelMensaje.setGeometry(QtCore.QRect(30, 310, 241, 21))
+        font = QtGui.QFont()
+        font.setFamily(_fromUtf8("Verdana"))
+        font.setPointSize(10)
+        self.labelMensaje.setFont(font)
+        self.labelMensaje.setText(_fromUtf8(""))
+        self.labelMensaje.setObjectName(_fromUtf8("labelMensaje"))
 
         self.retranslateUi(WizardPage3)
         QtCore.QMetaObject.connectSlotsByName(WizardPage3)
@@ -124,12 +135,12 @@ class Ui_WizardPage3(object):
         WizardPage3.setWindowTitle(_translate("WizardPage3", "WizardPage", None))
         self.label_4.setText(_translate("WizardPage3", "Entrenamiento Red", None))
         self.labelnNB_epoch_2.setText(_translate("WizardPage3", "batch_size", None))
-        self.label_3.setText(_translate("WizardPage3", "PostProceso (Compilación - Entrenamiento Red)", None))
+        self.label_3.setText(_translate("WizardPage3", "PostProceso (Compilacion - Entrenamiento Red)", None))
         self.lineEditNB_epoch.setText(_translate("WizardPage3", "10", None))
         self.labelCompilerLoss.setText(_translate("WizardPage3", "loss", None))
         self.labelCompilerOptimizer.setText(_translate("WizardPage3", "Optimizer", None))
         self.lineEditBatch.setText(_translate("WizardPage3", "10", None))
-        self.label_5.setText(_translate("WizardPage3", "Compilación Red", None))
+        self.label_5.setText(_translate("WizardPage3", "Compilacion Red", None))
         self.comboBoxCompilerOptimizer.setItemText(0, _translate("WizardPage3", "rmsprop", None))
         self.comboBoxCompilerOptimizer.setItemText(1, _translate("WizardPage3", "adagrad", None))
         self.comboBoxCompilerOptimizer.setItemText(2, _translate("WizardPage3", "adadelta", None))
@@ -145,4 +156,5 @@ class Ui_WizardPage3(object):
         self.comboBoxCompilerMetrics.setItemText(0, _translate("WizardPage3", "categorical_accuracy", None))
         self.comboBoxCompilerMetrics.setItemText(1, _translate("WizardPage3", "binary_accuracy", None))
         self.comboBoxCompilerMetrics.setItemText(2, _translate("WizardPage3", "sparse_categorical_accuracy", None))
+        self.pushButtonNext.setText(_translate("WizardPage3", "Next", None))
 

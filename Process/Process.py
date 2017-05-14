@@ -10,7 +10,7 @@ class Process(object):
         
     """ ETAPA DE CREAR EL MODELO """
     
-    def addLayer(self, tipo, parametros):
+    def addLayer(self, tipo, parametros, lista):
         if(tipo == 'Embedding'):
             """ La entrada input_dim debe ser seteada con la longitud del vocabulario + 1"""
             self.modelo.add(Embedding(input_dim = parametros['input_dim'], output_dim= parametros['output'], input_length= parametros['input_length']))
@@ -36,7 +36,8 @@ class Process(object):
                     self.modelo.add(LSTM(parametros['output'], return_sequences = False))
                 else:
                     self.modelo.add(LSTM(parametros['output'], return_sequences = True))         
-        print self.modelo.get_config()        
+        print self.modelo.get_config()[0]       
+        #list.append(self.modelo.get_config())
         
     """ ETAPA DE COMPILAR EL MODELO """
     def compilerModel(self, opt, los, met):

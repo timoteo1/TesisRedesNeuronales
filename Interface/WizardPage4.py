@@ -51,6 +51,9 @@ class Ui_WizardPage4(object):
         font.setPointSize(9)
         self.labelTipoMetrica.setFont(font)
         self.labelTipoMetrica.setObjectName(_fromUtf8("labelTipoMetrica"))
+        self.pushButtonFinish = QtGui.QPushButton(WizardPage4)
+        self.pushButtonFinish.setGeometry(QtCore.QRect(330, 130, 131, 23))
+        self.pushButtonFinish.setObjectName(_fromUtf8("pushButtonFinish"))
 
         self.retranslateUi(WizardPage4)
         QtCore.QMetaObject.connectSlotsByName(WizardPage4)
@@ -65,4 +68,5 @@ class Ui_WizardPage4(object):
         self.comboBoxTipoMetrica.setItemText(3, _translate("WizardPage4", "accuracy_score", None))
         self.comboBoxTipoMetrica.setItemText(4, _translate("WizardPage4", "confusion_matrix", None))
         self.labelTipoMetrica.setText(_translate("WizardPage4", "Tipo Metrica", None))
+        self.pushButtonFinish.setText(_translate("WizardPage4", "Finish", None))
 

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'WPruebaUser1.ui'
+# Form implementation generated from reading ui file 'WPruebaUser1_next.ui'
 #
 # Created by: PyQt4 UI code generator 4.11.4
 #
@@ -25,7 +25,7 @@ except AttributeError:
 class Ui_WizardPage(object):
     def setupUi(self, WizardPage):
         WizardPage.setObjectName(_fromUtf8("WizardPage"))
-        WizardPage.resize(484, 325)
+        WizardPage.resize(483, 363)
         self.labelTipoSplit = QtGui.QLabel(WizardPage)
         self.labelTipoSplit.setGeometry(QtCore.QRect(30, 230, 91, 41))
         font = QtGui.QFont()
@@ -110,6 +110,21 @@ class Ui_WizardPage(object):
         self.comboBoxTest.addItem(_fromUtf8(""))
         self.comboBoxTest.addItem(_fromUtf8(""))
         self.comboBoxTest.addItem(_fromUtf8(""))
+        self.pushButtonNext = QtGui.QPushButton(WizardPage)
+        self.pushButtonNext.setGeometry(QtCore.QRect(340, 330, 131, 23))
+        self.pushButtonNext.setObjectName(_fromUtf8("pushButtonNext"))
+        self.labelMensaje = QtGui.QLabel(WizardPage)
+        self.labelMensaje.setGeometry(QtCore.QRect(50, 310, 241, 21))
+        font = QtGui.QFont()
+        font.setFamily(_fromUtf8("Verdana"))
+        font.setPointSize(10)
+        self.labelMensaje.setFont(font)
+        self.labelMensaje.setText(_fromUtf8(""))
+        self.labelMensaje.setObjectName(_fromUtf8("labelMensaje"))
+        self.pushButtonInformacion = QtGui.QPushButton(WizardPage)
+        self.pushButtonInformacion.setGeometry(QtCore.QRect(430, 10, 41, 31))
+        self.pushButtonInformacion.setText(_fromUtf8(""))
+        self.pushButtonInformacion.setObjectName(_fromUtf8("pushButtonInformacion"))
 
         self.retranslateUi(WizardPage)
         QtCore.QMetaObject.connectSlotsByName(WizardPage)
@@ -142,4 +157,5 @@ class Ui_WizardPage(object):
         self.comboBoxTest.setItemText(6, _translate("WizardPage", "0.7", None))
         self.comboBoxTest.setItemText(7, _translate("WizardPage", "0.8", None))
         self.comboBoxTest.setItemText(8, _translate("WizardPage", "0.9", None))
+        self.pushButtonNext.setText(_translate("WizardPage", "Next", None))
 

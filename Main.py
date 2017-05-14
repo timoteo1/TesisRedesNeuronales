@@ -9,11 +9,14 @@ from Interface.WizardPage2 import *
 from Interface.WizardPage3 import *
 from Interface.WizardPage4 import *
 from Interface.InterfaceResult import * 
+from Interface.InterfaceInform import *
+from Interface.InterfazCapas import *
 import PyQt4
 import sys
 from sympy.functions.elementary import integers
-from PyQt4.Qt import QStringList
+from PyQt4.Qt import QStringList, QString
 from psutil._psutil_windows import proc_cmdline
+
 
 """ Este modulo esta encargado de tomar los parametros que carga el usuario al sistema, por medio de la interfaz """
 
@@ -27,8 +30,8 @@ class FormularioPagina1(QtGui.QDialog):
         
         self.ui.pushButtonViewBalance.setEnabled(False)
         self.ui.pushButtonPreproceso.setEnabled(False)
-        
-        
+        self.ui.pushButtonNext.setEnabled(False)
+        self.ui.pushButtonInformacion.setIcon(QtGui.QIcon('C:\Users\Timoteo\Desktop\Tesis\Images\informacion.png'))
         self.preproceso = PreProcess()
         self.longitud = 0
     
@@ -37,6 +40,8 @@ class FormularioPagina1(QtGui.QDialog):
         QtCore.QObject.connect(self.ui.pushButtonViewBalance, QtCore.SIGNAL('clicked()'), self.mostrarBalanceo)
         QtCore.QObject.connect(self.ui.pushButtonPreproceso, QtCore.SIGNAL('clicked()'), self.preProcesarModelo)
         QtCore.QObject.connect(self.ui.comboBoxTipoSplit, QtCore.SIGNAL('currentIndexChanged(const QString&)'), self.deshabilitarTest)
+        QtCore.QObject.connect(self.ui.pushButtonNext, QtCore.SIGNAL('clicked()'), self.pushNext)
+        QtCore.QObject.connect(self.ui.pushButtonInformacion, QtCore.SIGNAL('clicked()'), self.mostrarInformacion)
     
     def deshabilitarTest(self):
         if self.ui.comboBoxTipoSplit.currentText() == 'TrainTest':
@@ -48,16 +53,22 @@ class FormularioPagina1(QtGui.QDialog):
         self.ui.pushButtonConfirmarFormato.setEnabled(False)
         formato = self.ui.comboBoxFormatoDataSet.currentText()
         self.preproceso.Constructor(formato)
-        self.preproceso.verPruebaBorrarDespues()
+        #self.preproceso.verPruebaBorrarDespues()
         self.ui.pushButtonPreproceso.setEnabled(True)
         self.ui.pushButtonViewBalance.setEnabled(True)
         """  Seteo longitud Maxima de PadSequence """
         self.ui.labelMaxLongitud.setText('La longitud maxima es: ' + str(self.preproceso.lenMinSequence()))
 
     
+    def mostrarInformacion(self):
+        FormularioInforme(self).exec_()
+        
+        
+    
     def mostrarBalanceo(self):
         x = self.preproceso.ViewBalance()
         FormularioResultado(tipo = 'mostrarBalanceo', parametro = x).exec_()
+        
         
     def preProcesarModelo(self):
         self.ui.pushButtonPreproceso.setEnabled(False)
@@ -72,13 +83,14 @@ class FormularioPagina1(QtGui.QDialog):
         """ Aca debo llamar a la ventana 2"""
         
         self.atributo.setPad_sequences(int(self.ui.lineEditPadSequence.text()))
+        self.ui.labelMensaje.setText('El preproceso fue correcto')
+        self.ui.pushButtonNext.setEnabled(True)
         
+     
+    def pushNext(self):   
         self.close()
         formularioPagina2(self.preproceso, self.atributo).exec_()
         
-        
-        
-        #self.ui.pushButtonAddCapa.setEnabled(True)
         
 class formularioPagina2(QtGui.QDialog):
     def __init__(self, prep, atr, parent = None):
@@ -86,19 +98,35 @@ class formularioPagina2(QtGui.QDialog):
         self.ui = Ui_WizardPage2()
         self.ui.setupUi(self) 
         
+        
+        self.listCapas = list()
         self.preproceso = prep
         self.atributo = atr
         self.proceso = Process()
         self.capas = 0
-        self.ui.pushButtonNext.setEnabled(False)
+        self.ui.pushButtonNext_2.setEnabled(False)
         self.ui.comboBoxRate.setEnabled(False)
         self.ui.comboBoxActivation.setEnabled(False)
         self.ui.comboBoxReturnSequencesLSTM.setEnabled(False)
+        self.ui.pushButtonArchivo.setEnabled(False)
+        self.ui.pushButtonVerRed.setEnabled(False)
+        
         
         QtCore.QObject.connect(self.ui.comboBoxTipoCapa, QtCore.SIGNAL('currentIndexChanged(const QString&)'), self.deshabilitarReturnSequences)
         QtCore.QObject.connect(self.ui.pushButtonAddCapa, QtCore.SIGNAL('clicked()'), self.agregarCapa)
-        QtCore.QObject.connect(self.ui.pushButtonNext, QtCore.SIGNAL('clicked()'), self.siguienteEtapa)
-        
+        QtCore.QObject.connect(self.ui.pushButtonNext_2, QtCore.SIGNAL('clicked()'), self.pushNext)
+        QtCore.QObject.connect(self.ui.pushButtonArchivo, QtCore.SIGNAL('clicked()'), self.generarArchivo)
+        QtCore.QObject.connect(self.ui.pushButtonVerRed, QtCore.SIGNAL('clicked()'), self.mostrarCapas)
+    
+    def generarArchivo(self):
+        archi = open('C:\Users\Timoteo\Desktop\RedSalida.txt', 'a')
+        for i in self.listCapas:
+            archi.write(i + '\n')
+        archi.close()
+        self.ui.pushButtonArchivo.setEnabled(False)
+    
+    
+    
     def deshabilitarReturnSequences(self):
         if self.ui.comboBoxTipoCapa.currentText() == 'LSTM':
             self.ui.comboBoxReturnSequencesLSTM.setEnabled(True)
@@ -123,27 +151,42 @@ class formularioPagina2(QtGui.QDialog):
         parametros['output'] =  int(self.ui.lineEditOutputLayer.text())
         parametros['rate'] = float(self.ui.comboBoxRate.currentText())
         parametros['return_sequences'] = str(self.ui.comboBoxReturnSequencesLSTM.currentText())
+        
+        """ Cargo entradas para el archivo de salida, los guardo en una lista """  
+        if self.ui.comboBoxTipoCapa.currentText() == 'Embedding':
+            self.listCapas.append('nro de capa: ' + str(self.capas) + ', '  + 'tipo capa: Embedding' +  ', output: ' + str(self.ui.lineEditOutputLayer.text()))
+        elif self.ui.comboBoxTipoCapa.currentText() == 'Dense':
+            self.listCapas.append('nro de capa: ' + str(self.capas) + ', ' + 'tipo capa: Dense' + ', funcion de activacion: ' + parametros['activation']  + ', output: ' + str(parametros['output']))
+        elif self.ui.comboBoxTipoCapa.currentText() == 'Dropout':
+            self.listCapas.append('nro de capa: ' + str(self.capas) + ', ' + 'tipo capa: Dropout' + ', Rate: ' + str(self.ui.comboBoxRate.currentText()))
+        elif self.ui.comboBoxTipoCapa.currentText() == 'LSTM':
+            self.listCapas.append('nro de capa: ' + str(self.capas) + ', ' + 'tipo capa: LSTM, ' + 'return_sequens: ' + str(self.ui.comboBoxReturnSequencesLSTM.currentText()) + ', output: ' + str(parametros['output']))  
         #parametros['input_length'] = int(self.ui.lineEditPadSequence.text())
         #parametros['input_dim'] = self.preproceso.lenVocabulary() + 1
         if self.ui.comboBoxTipoCapa.currentText() == 'Embedding':
             parametros['input_length'] = self.atributo.getPad_sequences()            
             parametros['input_dim'] = self.preproceso.lenVocabulary() + 1
-        self.proceso.addLayer(self.ui.comboBoxTipoCapa.currentText(), parametros)
+        self.proceso.addLayer(self.ui.comboBoxTipoCapa.currentText(), parametros, self.listCapas)
         """ saco la opcion de agregar la capa Embedding """
-        if self.capas == 1: 
+        if self.capas == 1:
+            self.ui.pushButtonVerRed.setEnabled(True) 
             self.ui.comboBoxTipoCapa.removeItem(0)
             """ Habilito el boton Proceso, solo si tengo dos o mas capas y la ultima capa no es de tipo Dropout """
         elif self.capas >= 2: 
             if self.ui.comboBoxTipoCapa.currentText() != 'Dropout':
-                self.ui.pushButtonNext.setEnabled(True)
+                self.ui.pushButtonNext_2.setEnabled(True)
+                self.ui.pushButtonArchivo.setEnabled(True)
             else:
-                self.ui.pushButtonNext.setEnabled(False)
-    
-    def siguienteEtapa(self):
+                self.ui.pushButtonNext_2.setEnabled(False)
+                self.ui.pushButtonArchivo.setEnabled(False)
+                
+    def pushNext(self):
         self.close()
         formularioPagina3(self.preproceso, self.proceso, self.atributo).exec_()
-        
-        
+    
+    def mostrarCapas(self):
+        FormularioCapas(self.listCapas).exec_()
+    
 class formularioPagina3(QtGui.QDialog):
     def __init__(self, prep, proc, atr, parent = None):
         QtGui.QWidget.__init__(self, parent)
@@ -153,8 +196,10 @@ class formularioPagina3(QtGui.QDialog):
         self.preproceso = prep
         self.proceso = proc
         self.atributo = atr
-            
+        self.ui.pushButtonNext.setEnabled(False)    
         QtCore.QObject.connect(self.ui.pushButtonProceso, QtCore.SIGNAL('clicked()'), self.procesarModelo)
+        QtCore.QObject.connect(self.ui.pushButtonNext, QtCore.SIGNAL('clicked()'), self.pushNext)
+        
         
     def procesarModelo(self):
         self.X_trainSplit = self.atributo.getX_trainSplit()
@@ -185,6 +230,11 @@ class formularioPagina3(QtGui.QDialog):
             self.predictClass = self.proceso.predictClassModel(self.X_testSplit)
         self.atributo.setPredictClass(self.predictClass)
         self.atributo.setY_test(self.y_test)
+        self.ui.labelMensaje.setText('El proceso fue correcto')
+        self.ui.pushButtonNext.setEnabled(True)
+        
+        
+    def pushNext(self): 
         self.close()
         formularioPagina4(self.atributo).exec_()
 
@@ -197,6 +247,7 @@ class formularioPagina4(QtGui.QDialog):
         self.atributo = atr
         self.postproceso = PostProcess()
         QtCore.QObject.connect(self.ui.pushButtonResultados, QtCore.SIGNAL('clicked()'), self.mostrarMetricas)
+        QtCore.QObject.connect(self.ui.pushButtonFinish, QtCore.SIGNAL('clicked()'), self.pushFinish)
         
     def mostrarMetricas(self):
         x = QStringList
@@ -215,12 +266,83 @@ class formularioPagina4(QtGui.QDialog):
             #x = self.postproceso.getMetrics(i, np.array(self.y_test), self.predictClass)
             x = self.postproceso.getMetrics(self.ui.comboBoxTipoMetrica.currentText(), np.array(self.y_test), self.predictClass)
             #x.append(m)
-        self.close()
+        
         FormularioResultado(tipo = 'mostrarBalanceo', parametro = x).exec_()
-         
+       
+    def pushFinish(self):
+        self.close()
+        
+class FormularioResultado(QtGui.QDialog):
+    def __init__(self, tipo, parametro = None, parent = None):
+        QtGui.QWidget.__init__(self, parent)
+        self.ui = Ui_DialogResultados()
+        self.ui.setupUi(self)
+        
+        
+        if tipo == 'mostrarBalanceo':
+            self.mostrarBalanceo(parametro)
+          
+            
+    def mostrarBalanceo(self, lista):
+        model = QtGui.QStringListModel(lista)
+        self.ui.listViewResultados.setModel(model)
+
+class FormularioInforme(QtGui.QDialog):
+    def __init__(self,  parametro = None, parent = None):
+        QtGui.QWidget.__init__(self, parent)
+        self.ui = Ui_DialogInforme()
+        self.ui.setupUi(self)
+        
+        self.ui.labelMensaje.setText("""                            
+                                                    Informacion
+
+        Tipos DataSet: A continuacion se describe las posibles estructura que puede
+        presentar el DataSet a evaluar.
+
+        Formato 1:
+        Esta compuesto por 4 columnas, separadas por coma y cada una de las columnas
+        dentro de comillas dobles. Cada una de estas columnas corresponde a el 
+        indice de la clase (1 a 10), titulo de la consulta, consulta y mejor respuesta. 
+
+        Formato 2:
+        Esta compuesto de varios campos separados por etiquetas de inicio <tag> y de fin
+        </tag>. Los campos obligatorios son:
+            
+        <review>
+            <rating>
+                (0.0, 1.0, 2.0, 3.0, 4.0, 5.0)
+            </rating>
+            <review_text>
+                contiene texto
+            </review_text>
+        </review>""")
+
+class FormularioCapas(QtGui.QDialog):
+    def __init__(self, tipo, parametro = None, parent = None):
+        QtGui.QWidget.__init__(self, parent)
+        self.ui = Ui_DialogCapas()
+        self.ui.setupUi(self)
+        
+        x =QStringList()
+        for i in tipo:
+            x.append(str(i))
+        model = QtGui.QStringListModel(x)
+        self.ui.listViewCapas.setModel(model)
+
+if __name__ == '__main__':
+    app = QtGui.QApplication(sys.argv)
+    
+    myapp = FormularioPagina1()
+    myapp.show()
+    sys.exit(app.exec_())        
+  
+
+        
+        
+
         
 """ -----------------/////////////////////////////////------------------------------------/////////////////////////////////////--------------- """
-
+"""
 class FormularioPrincipal(QtGui.QDialog):
     
     def __init__(self, parent = None):
@@ -232,7 +354,7 @@ class FormularioPrincipal(QtGui.QDialog):
         self.proceso = Process()
         self.postproceso = PostProcess()
        
-        """  Deshabilitar botones posteriores setear Formato  """
+          Deshabilitar botones posteriores setear Formato 
         self.ui.pushButtonViewBalance.setEnabled(False)
         self.ui.pushButtonPreproceso.setEnabled(False)
         self.ui.pushButtonAddCapa.setEnabled(False)
@@ -255,7 +377,7 @@ class FormularioPrincipal(QtGui.QDialog):
         self.predictModel = list()
         self.predictClass = list()
         #self.listaMetricas = list()
-        """ Mostrar Balanceo de dataSetOriginal """
+        
         QtCore.QObject.connect(self.ui.pushButtonConfirmarFormato, QtCore.SIGNAL('clicked()'), self.definirFormato)
         QtCore.QObject.connect(self.ui.pushButtonViewBalance, QtCore.SIGNAL('clicked()'), self.mostrarBalanceo)
         QtCore.QObject.connect(self.ui.pushButtonPreproceso, QtCore.SIGNAL('clicked()'), self.preProcesarModelo)
@@ -266,11 +388,10 @@ class FormularioPrincipal(QtGui.QDialog):
         #QtCore.QObject.connect(self.ui.pushButtonAddMet, QtCore.SIGNAL('clicked()'), self.almacenarMetricas)
         QtCore.QObject.connect(self.ui.pushButtonResultados, QtCore.SIGNAL('clicked()'), self.mostrarMetricas)
     
-    """
+   
     def almacenarMetricas(self):
         self.listaMetricas.append(str(self.ui.comboBoxTipoMetrica.currentText()))
-    """
-    
+        
     def definirFormato(self):
         self.ui.pushButtonConfirmarFormato.setEnabled(False)
         formato = self.ui.comboBoxFormatoDataSet.currentText()
@@ -278,7 +399,7 @@ class FormularioPrincipal(QtGui.QDialog):
         self.preproceso.verPruebaBorrarDespues()
         self.ui.pushButtonPreproceso.setEnabled(True)
         self.ui.pushButtonViewBalance.setEnabled(True)
-        """  Seteo longitu Maxima de PadSequence """
+       
         self.ui.labelMaxLongitud.setText('La longitud maxima es: ' + str(self.preproceso.lenMinSequence()))
         
     def mostrarMetricas(self):
@@ -330,7 +451,7 @@ class FormularioPrincipal(QtGui.QDialog):
         self.ui.pushButtonAddCapa.setEnabled(True)
         
     def agregarCapa(self):
-        """ Acciones para agregar capa a la red"""
+      
         
         self.capas = self.capas + 1
         parametros = {}
@@ -344,10 +465,10 @@ class FormularioPrincipal(QtGui.QDialog):
             parametros['input_length'] = int(self.ui.lineEditPadSequence.text())            
             parametros['input_dim'] = self.preproceso.lenVocabulary() + 1
         self.proceso.addLayer(self.ui.comboBoxTipoCapa.currentText(), parametros)
-        """ saco la opcion de agregar la capa Embedding """
+        
         if self.capas == 1: 
             self.ui.comboBoxTipoCapa.removeItem(0)
-            """ Habilito el boton Proceso, solo si tengo dos o mas capas y la ultima capa no es de tipo Dropout """
+            
         elif self.capas >= 2: 
             if self.ui.comboBoxTipoCapa.currentText() != 'Dropout':
                 self.ui.pushButtonProceso.setEnabled(True)
@@ -382,26 +503,10 @@ class FormularioPrincipal(QtGui.QDialog):
             self.predictModel = self.proceso.predictModel(self.X_testSplit)
             self.predictClass = self.proceso.predictClassModel(self.X_testSplit)
         self.ui.pushButtonProceso.setEnabled(False)
+
+"""
     
-class FormularioResultado(QtGui.QDialog):
-    def __init__(self, tipo, parametro = None, parent = None):
-        QtGui.QWidget.__init__(self, parent)
-        self.ui = Ui_DialogResultados()
-        self.ui.setupUi(self)
-        if tipo == 'mostrarBalanceo':
-            self.mostrarBalanceo(parametro)
-          
-            
-    def mostrarBalanceo(self, lista):
-        model = QtGui.QStringListModel(lista)
-        self.ui.listViewResultados.setModel(model)
-    
-if __name__ == '__main__':
-    app = QtGui.QApplication(sys.argv)
-    
-    myapp = FormularioPagina1()
-    myapp.show()
-    sys.exit(app.exec_())
+
     
     
     
